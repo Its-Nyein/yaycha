@@ -4,6 +4,7 @@ import Item from "./Item";
 import Form from "./Form";
 
 export default function App() {
+  const [showForm, setShowForm] = useState(false);
   const [data, setData] = useState([
     { id: 1, content: "Hello, World!", name: "Alice" },
     { id: 2, content: "React is fun.", name: "Bob" },
@@ -21,8 +22,30 @@ export default function App() {
 
   return (
     <div style={{ maxWidth: 600, margin: "20px auto" }}>
-      <h1>Yaycha</h1>
-      <Form add={add} />
+      <h1
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        Yaycha
+        <button
+          onClick={() => setShowForm(!showForm)}
+          style={{
+            width: 32,
+            height: 32,
+            borderRadius: 50,
+            border: "0 none",
+            background: showForm ? "#dc3545" : "#0d6efd",
+            color: "white",
+          }}
+        >
+          {showForm ? "×" : "+"}
+        </button>
+      </h1>
+
+      {showForm && <Form add={add} />}
       <List>
         {data.map((item) => {
           return <Item key={item.id} item={item} remove={remove} />;
