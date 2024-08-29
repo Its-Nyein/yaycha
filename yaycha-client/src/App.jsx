@@ -6,18 +6,21 @@ import Item from "./components/Item";
 import { AppContext } from "./ThemeApp";
 
 export default function App() {
-  const { showForm } = useContext(AppContext);
+  const { showForm, setGlobalMsg } = useContext(AppContext);
   const [data, setData] = useState([
     { id: 3, content: "Yay, interesting.", name: "Chris" },
     { id: 2, content: "React is fun.", name: "Bob" },
     { id: 1, content: "Hello, World!", name: "Alice" },
   ]);
+
   const remove = (id) => {
     setData(data.filter((item) => item.id !== id));
+    setGlobalMsg("An item deleted");
   };
   const add = (content, name) => {
     const id = data[0].id + 1;
     setData([{ id, content, name }, ...data]);
+    setGlobalMsg("An item added");
   };
   return (
     <Box>

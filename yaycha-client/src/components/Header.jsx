@@ -9,11 +9,16 @@ import { useContext } from "react";
 import { AppContext } from "../ThemeApp";
 
 export default function Header() {
-  const { showForm, setShowForm, mode, setMode } = useContext(AppContext);
+  const { showForm, setShowForm, mode, setMode, showDrawer, setShowDrawer } =
+    useContext(AppContext);
   return (
     <AppBar position="static">
       <Toolbar>
-        <IconButton color="inherit" edge="start">
+        <IconButton
+          color="inherit"
+          edge="start"
+          onClick={() => setShowDrawer(true)}
+        >
           <MenuIcon />
         </IconButton>
         <Typography sx={{ flexGrow: 1, ml: 2 }}>Yaycha</Typography>
