@@ -1,10 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import { faker } from "@faker-js/faker";
-import { bcrypt } from "brcypt";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
-async function UserSeeder() {
+export async function UserSeeder() {
   const password = await bcrypt.hash("password", 10);
   console.log("User seeding started ...");
 
@@ -13,7 +13,7 @@ async function UserSeeder() {
     const lastName = faker.person.lastName();
     const name = `${firstName} ${lastName}`;
     const userName = `${firstName}${lastName[0]}`.toLocaleLowerCase();
-    const bio = faker.person.bio;
+    const bio = faker.person.bio();
 
     await prisma.user.upsert({
       where: { userName },
@@ -23,5 +23,3 @@ async function UserSeeder() {
   }
   console.log("User seeding Done!");
 }
-
-module.exports = { UserSeeder };

@@ -3,7 +3,7 @@ import { faker } from "@faker-js/faker";
 
 const prisma = new PrismaClient();
 
-async function PostSeeder() {
+export async function PostSeeder() {
   const data = [];
 
   for (let i = 0; i < 20; i++) {
@@ -16,5 +16,3 @@ async function PostSeeder() {
   await prisma.post.createMany({ data });
   console.log("Post seeding Done!");
 }
-
-module.exports = { PostSeeder };
