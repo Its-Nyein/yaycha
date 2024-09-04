@@ -1,10 +1,13 @@
 import express from "express";
 import cors from "cors";
-import { prisma } from "./prismaClient";
+import { prisma } from "./prismaClient.js";
+import ContentRouter from "./routers/content.js";
 
 const app = express();
 
 app.use(cors());
+
+app.use("/content", ContentRouter);
 
 app.get("/info", (req, res) => {
   res.json({ msg: "Yaycha API" });
