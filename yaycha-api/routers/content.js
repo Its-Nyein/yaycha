@@ -19,4 +19,22 @@ router.get("/posts", async (req, res) => {
   }
 });
 
+router.get("/posts/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const result = await prisma.post.findFirst({
+      where: { id: Number(id) },
+      include: {
+        user: true,
+        comments: {
+          include: { user: true },
+        },
+      },
+    });
+    res.json(result);
+  } catch (e) {
+    res.status(500).json({ msg: e });
+  }
+});
+
 export default router;
