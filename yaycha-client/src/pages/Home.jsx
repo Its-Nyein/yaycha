@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import Form from "../components/Form";
 import Item from "../components/Item";
@@ -6,11 +6,16 @@ import { AppContext } from "../ThemeApp";
 
 export default function Home() {
   const { showForm, setGlobalMsg } = useContext(AppContext);
-  const [data, setData] = useState([
-    { id: 3, content: "Yay, interesting.", name: "Chris" },
-    { id: 2, content: "React is fun.", name: "Bob" },
-    { id: 1, content: "Hello, World!", name: "Alice" },
-  ]);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const api = import.meta.env.VITE_API;
+
+    fetch(`${api}/content/posts`).then(async (res) => {
+      setData(await res.json());
+    });
+  }, []);
+
   const remove = (id) => {
     setData(data.filter((item) => item.id !== id));
     setGlobalMsg("An item deleted");
