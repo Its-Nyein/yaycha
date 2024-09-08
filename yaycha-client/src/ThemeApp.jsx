@@ -9,8 +9,11 @@ import Register from "./pages/Register";
 import Likes from "./pages/Likes";
 import Profile from "./pages/Profile";
 import Comments from "./pages/Comments";
+import { QueryClientProvider, QueryClient } from "react-query";
 
 export const AppContext = createContext();
+
+export const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -79,7 +82,9 @@ export default function ThemedApp() {
           setMode,
         }}
       >
-        <RouterProvider router={router} />
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
         <CssBaseline />
       </AppContext.Provider>
     </ThemeProvider>
