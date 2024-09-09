@@ -1,6 +1,7 @@
 import express from "express";
 import { prisma } from "../prismaClient.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -50,6 +51,24 @@ router.post("/users", async (req, res) => {
     data: { name, userName, bio, password: hashPassword },
   });
   res.json(user);
+});
+
+router.post("/login", async (req, res) => {
+  const { userName, password } = req.body;
+  if (!userName || !password) {
+    return res.status(400).json({ msg: "Username and password are required" });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { userName },
+  });
+  if (user) {
+    if (bcrypt.compare(password, user.password)) {
+      const token = jwt.sign(user, process.env.JWT_SECRET);
+      return res.json({ token, user });
+    }
+  }
+  res.status(401).json({ msg: "Wrong credentials" });
 });
 
 export default router;
