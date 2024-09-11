@@ -29,30 +29,22 @@ export default function Register() {
     create.mutate({ name, username, bio, password });
   };
 
-  const create = useMutation(
-    async (data) => {
-      postUser(data);
+  const create = useMutation(async (data) => postUser(data), {
+    onError: async () => {
+      setError("Cannot create account");
     },
-    {
-      onError: async () => {
-        setError("Cannot create account");
-      },
-      onSuccess: async (user) => {
-        setGlobalMsg("Account created");
-        navigate("/login");
-      },
-    }
-  );
+    onSuccess: async (user) => {
+      setGlobalMsg("Account created");
+      navigate("/login");
+    },
+  });
 
   return (
     <Box>
       <Typography variant="h3">Register</Typography>
-      <Alert severity="warning" sx={{ mt: 2 }}>
-        All fields required
-      </Alert>
       {error && (
         <Alert severity="warning" sx={{ mt: 2 }}>
-          {error.message}
+          {error}
         </Alert>
       )}
       <form
