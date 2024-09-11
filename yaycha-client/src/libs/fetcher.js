@@ -1,5 +1,9 @@
 const api = import.meta.env.VITE_API;
 
+function getToken () {
+  return localStorage.getItem("token")
+}
+
 export async function postUser(data) {
   const res = await fetch(`${api}/users`, {
     method: "POST",
@@ -30,4 +34,14 @@ export async function postLogin(userName, password) {
   }
 
   throw new Error("Username or password is incorrect");
+}
+
+export async function fetchUser(id) {
+  const token = getToken();
+  const res = await fetch(`${api}/users/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.json();
 }

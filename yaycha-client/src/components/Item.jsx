@@ -51,6 +51,10 @@ export default function Item({ item, remove, primary, comment }) {
         </Box>
         <Typography sx={{ my: 3 }}>{item.content}</Typography>
         <Box
+          onClick={(e) => {
+            navigate(`/profile/${item.user.id}`);
+            e.stopPropagation();
+          }}
           sx={{
             display: "flex",
             flexDirection: "row",
@@ -58,8 +62,10 @@ export default function Item({ item, remove, primary, comment }) {
             gap: 1,
           }}
         >
-          <UserIcon fontSize="12" color="info" />
-          <Typography variant="caption">{item.user.name}</Typography>
+          <UserIcon fontSize="12" color="info" sx={{ cursor: "pointer" }} />
+          <Typography variant="caption" sx={{ cursor: "pointer" }}>
+            {item.user.name}
+          </Typography>
         </Box>
       </CardContent>
     </Card>
