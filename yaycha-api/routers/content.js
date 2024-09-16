@@ -1,5 +1,6 @@
 import express from "express";
 import { prisma } from "../prismaClient.js";
+import auth from "../middlewares/auth.js";
 
 const router = express.Router();
 
@@ -39,7 +40,7 @@ router.get("/posts/:id", async (req, res) => {
   }
 });
 
-router.delete("/posts/:id", async (req, res) => {
+router.delete("/posts/:id", auth, async (req, res) => {
   try {
     const id = req.params.id;
     await prisma.comment.deleteMany({
@@ -55,7 +56,7 @@ router.delete("/posts/:id", async (req, res) => {
   }
 });
 
-router.delete("/comments/:id", async (req, res) => {
+router.delete("/comments/:id", auth, async (req, res) => {
   try {
     const id = req.params.id;
     await prisma.comment.delete({
