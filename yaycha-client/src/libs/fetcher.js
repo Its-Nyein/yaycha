@@ -1,7 +1,7 @@
 const api = import.meta.env.VITE_API;
 
-function getToken () {
-  return localStorage.getItem("token")
+function getToken() {
+  return localStorage.getItem("token");
 }
 
 export async function postUser(data) {
@@ -44,4 +44,19 @@ export async function fetchUser(id) {
     },
   });
   return res.json();
+}
+
+export async function fetchVerify() {
+  const token = getToken();
+  const res = await fetch(`${api}/verify`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (res.ok) {
+    return res.json();
+  }
+
+  return false;
 }

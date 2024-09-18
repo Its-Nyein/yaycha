@@ -2,6 +2,7 @@ import express from "express";
 import { prisma } from "../prismaClient.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { auth } from "../middlewares/auth.js";
 
 const router = express.Router();
 
@@ -69,6 +70,11 @@ router.post("/login", async (req, res) => {
     }
   }
   res.status(401).json({ msg: "Wrong credentials" });
+});
+
+router.get("/verify", auth, async (req, res) => {
+  const user = res.locals.user;
+  res.json(user);
 });
 
 export default router;
