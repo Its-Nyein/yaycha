@@ -1,4 +1,6 @@
 import { useRef } from "react";
+import PropTypes from "prop-types";
+
 import { Box, TextField, Button } from "@mui/material";
 export default function Form({ add }) {
   const contentRef = useRef();
@@ -7,7 +9,7 @@ export default function Form({ add }) {
       onSubmit={(e) => {
         e.preventDefault();
         const content = contentRef.current.value;
-        add(content, "Alice");
+        add(content);
         e.currentTarget.reset();
       }}
     >
@@ -27,3 +29,9 @@ export default function Form({ add }) {
     </form>
   );
 }
+
+Form.propTypes = {
+  add: PropTypes.shape({
+    mutate: PropTypes.func.isRequired,
+  }).isRequired,
+};

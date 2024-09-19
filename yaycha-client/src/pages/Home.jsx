@@ -5,13 +5,22 @@ import Item from "../components/Item";
 import { AppContext } from "../ThemeApp";
 import { useQuery, useMutation } from "react-query";
 import { queryClient } from "../ThemeApp";
+import { postPost } from "../libs/fetcher";
 
 const api = import.meta.env.VITE_API;
 export default function Home() {
-  const { showForm, setGlobalMsg } = useContext(AppContext);
+  const { showForm, setGlobalMsg, auth } = useContext(AppContext);
   const { isLoading, isError, error, data } = useQuery("posts", async () => {
     const res = await fetch(`${api}/content/posts`);
     return res.json();
+  });
+
+  const add = useMutation(async (content) => postPost(content), {
+    onMutate: async (post) => {
+      await queryClient.cancelQueries("posts");
+      await queryClient.setQueryData("posts", (old) => [post, ...old]);
+      setGlobalMsg("A post added");
+    },
   });
 
   const remove = useMutation(
@@ -45,9 +54,15 @@ export default function Home() {
 
   return (
     <Box>
-      {showForm && <Form add={add} />}
-      {data.map((item) => {
-        return <Item key={item.id} item={item} remove={remove.mutate} />;
+      {showForm && auth && <Form add={add.mutate} />}
+      {data.map((item, index) => {
+        return (
+          <Item
+            key={`${item.id}-${index}`}
+            item={item}
+            remove={remove.mutate}
+          />
+        );
       })}
     </Box>
   );

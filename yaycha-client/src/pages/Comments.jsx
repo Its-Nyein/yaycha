@@ -1,16 +1,18 @@
 import { Alert, Box, Button, TextField } from "@mui/material";
 import Item from "../components/Item";
-import { useQuery, useMutation, isError } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import { useParams, useNavigate } from "react-router-dom";
 import { AppContext, queryClient } from "../ThemeApp";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
+import { postComment } from "../libs/fetcher";
 
 const api = import.meta.env.VITE_API;
 
 export default function Comments() {
   const { id } = useParams();
   const navigate = new useNavigate();
-  const { setGlobalMsg } = useContext(AppContext);
+  const { setGlobalMsg, auth } = useContext(AppContext);
+  const commentRef = useRef();
 
   const { isLoading, isError, error, data } = useQuery("comments", async () => {
     const res = await fetch(`${api}/content/posts/${id}`);
@@ -23,6 +25,16 @@ export default function Comments() {
     });
     navigate("/");
     setGlobalMsg("A post deleted");
+  });
+
+  const addComment = useMutation(async (content) => postComment(content, id), {
+    onSuccess: async (comment) => {
+      await queryClient.cancelQueries("comments");
+      await queryClient.setQueryData("comments", (old) => {
+        old.comments = [...old.comments, comment];
+        return { ...old };
+      });
+    },
   });
 
   const removeComment = useMutation(
@@ -62,14 +74,28 @@ export default function Comments() {
         return <Item key={2} item={comment} remove={removeComment.mutate} />;
       })}
 
-      <form>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 3 }}>
-          <TextField multiline placeholder="Your Comment" />
-          <Button type="submit" variant="contained">
-            Reply
-          </Button>
-        </Box>
-      </form>
+      {auth && (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const content = commentRef.current.value;
+            if (!content) return false;
+            addComment.mutate(content);
+            e.currentTarget.reset();
+          }}
+        >
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 3 }}>
+            <TextField
+              multiline
+              placeholder="Your Comment"
+              inputRef={commentRef}
+            />
+            <Button type="submit" variant="contained">
+              Reply
+            </Button>
+          </Box>
+        </form>
+      )}
     </Box>
   );
 }
