@@ -112,4 +112,98 @@ router.post("/comments", auth, async (req, res) => {
   res.json(comment);
 });
 
+router.post("/like/posts/:id", auth, async (req, res) => {
+  const { id } = req.params;
+  const user = res.locals.user;
+
+  const postLike = await prisma.postLike.create({
+    data: {
+      postId: Number(id),
+      userId: Number(user.id),
+    },
+  });
+  res.json({ postLike });
+});
+
+router.post("/unlike/posts/:id", auth, async (req, res) => {
+  const { id } = req.params;
+  const user = res.locals.user;
+
+  await prisma.postLike.deleteMany({
+    where: {
+      postId: Number(id),
+      userId: Number(user.id),
+    },
+  });
+  res.json({ msg: `Unlike Post ${id}` });
+});
+
+router.post("/like/comments/:id", auth, async (req, res) => {
+  const { id } = req.params;
+  const user = res.locals.user;
+
+  const commentLike = await prisma.commentLike.create({
+    data: {
+      commetId: Number(id),
+      userId: Number(user.id),
+    },
+  });
+
+  res.json({ commentLike });
+});
+
+router.post("/unlike/comments/:id", auth, async (req, res) => {
+  const { id } = req.params;
+  const user = res.locals.user;
+
+  await prisma.commentLike.deleteMany({
+    where: {
+      commentId: Number(id),
+      userId: Number(user.id),
+    },
+  });
+
+  res.json({ msg: "Unlike Comment ${id" });
+});
+
+router.get("/likes/posts/:id", async (req, res) => {
+  const { id } = req.params;
+
+  const data = await prisma.postLike.findMany({
+    where: {
+      postId: Number(id),
+    },
+    include: {
+      user: {
+        include: {
+          followers: true,
+          following: true,
+        },
+      },
+    },
+  });
+
+  res.json(data);
+});
+
+router.get("/likes/comments/:id", async (req, res) => {
+  const { id } = req.params;
+
+  const data = await prisma.commentLike.findMany({
+    where: {
+      commentId: Number(id),
+    },
+    include: {
+      user: {
+        include: {
+          followers: true,
+          following: true,
+        },
+      },
+    },
+  });
+
+  res.json(data);
+});
+
 export default router;
