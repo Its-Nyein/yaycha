@@ -10,6 +10,7 @@ router.get("/posts", async (req, res) => {
       include: {
         user: true,
         comments: true,
+        postLike: true,
       },
       orderBy: { id: "desc" },
       take: 20,
@@ -23,20 +24,24 @@ router.get("/posts", async (req, res) => {
 });
 
 router.get("/posts/:id", async (req, res) => {
-  const id = req.params.id;
+  const { id } = req.params;
   try {
-    const result = await prisma.post.findFirst({
+    const result = await prisma.post.findUnique({
       where: { id: Number(id) },
       include: {
         user: true,
         comments: {
-          include: { user: true },
+          include: {
+            user: true,
+            commentLike: true,
+          },
         },
+        postLike: true,
       },
     });
     res.json(result);
   } catch (e) {
-    res.status(500).json({ msg: e });
+    res.status(500).json({ msg: "Damm it" });
   }
 });
 
