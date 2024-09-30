@@ -19,8 +19,8 @@ model User {
   posts        Post[]
   comments     Comment[]
   created      DateTime      @default(now())
-  postLikes    postLike[]
-  commentLikes commentLike[]
+  postLikes    PostLike[]
+  commentLikes CommentLike[]
   followers    Follow[]      @relation("followers")
   following    Follow[]      @relation("following")
 }
@@ -32,7 +32,7 @@ model Post {
   userId   Int
   comments Comment[]
   created  DateTime   @default(now())
-  postLike postLike[]
+  postLike PostLike[]
 }
 
 model Comment {
@@ -43,10 +43,10 @@ model Comment {
   post        Post          @relation(fields: [postId], references: [id])
   postId      Int
   created     DateTime      @default(now())
-  commentLike commentLike[]
+  commentLike CommentLike[]
 }
 
-model postLike {
+model PostLike {
   id      Int      @id @default(autoincrement())
   post    Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId  Int
@@ -55,7 +55,7 @@ model postLike {
   created DateTime @default(now())
 }
 
-model commentLike {
+model CommentLike {
   id        Int      @id @default(autoincrement())
   comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
   commentId Int
