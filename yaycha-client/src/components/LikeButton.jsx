@@ -79,9 +79,9 @@ const LikeButton = ({ item, comment }) => {
       <Button
         onClick={(e) => {
           if (comment) {
-            navigate(`/like/${item.id}/comment`);
+            navigate(`/likes/${item.id}/comment`);
           } else {
-            navigate(`/like/${item.id}/post`);
+            navigate(`/likes/${item.id}/post`);
           }
         }}
         sx={{ color: "text.fade" }}

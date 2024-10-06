@@ -10,7 +10,7 @@ router.get("/posts", async (req, res) => {
       include: {
         user: true,
         comments: true,
-        postLike: true,
+        likes: true,
       },
       orderBy: { id: "desc" },
       take: 20,
@@ -33,10 +33,10 @@ router.get("/posts/:id", async (req, res) => {
         comments: {
           include: {
             user: true,
-            commentLike: true,
+            likes: true,
           },
         },
-        postLike: true,
+        likes: true,
       },
     });
     res.json(result);
@@ -121,20 +121,20 @@ router.post("/like/posts/:id", auth, async (req, res) => {
   const { id } = req.params;
   const user = res.locals.user;
 
-  const postLike = await prisma.PostLike.create({
+  const like = await prisma.postLike.create({
     data: {
       postId: Number(id),
       userId: Number(user.id),
     },
   });
-  res.json({ postLike });
+  res.json({ like });
 });
 
 router.post("/unlike/posts/:id", auth, async (req, res) => {
   const { id } = req.params;
   const user = res.locals.user;
 
-  await prisma.PostLike.deleteMany({
+  await prisma.postLike.deleteMany({
     where: {
       postId: Number(id),
       userId: Number(user.id),
@@ -147,21 +147,21 @@ router.post("/like/comments/:id", auth, async (req, res) => {
   const { id } = req.params;
   const user = res.locals.user;
 
-  const commentLike = await prisma.CommentLike.create({
+  const like = await prisma.commentLike.create({
     data: {
       commetId: Number(id),
       userId: Number(user.id),
     },
   });
 
-  res.json({ commentLike });
+  res.json({ like });
 });
 
 router.post("/unlike/comments/:id", auth, async (req, res) => {
   const { id } = req.params;
   const user = res.locals.user;
 
-  await prisma.CommentLike.deleteMany({
+  await prisma.commentLike.deleteMany({
     where: {
       commentId: Number(id),
       userId: Number(user.id),
@@ -174,7 +174,7 @@ router.post("/unlike/comments/:id", auth, async (req, res) => {
 router.get("/likes/posts/:id", async (req, res) => {
   const { id } = req.params;
 
-  const data = await prisma.PostLike.findMany({
+  const data = await prisma.postLike.findMany({
     where: {
       postId: Number(id),
     },
@@ -194,7 +194,7 @@ router.get("/likes/posts/:id", async (req, res) => {
 router.get("/likes/comments/:id", async (req, res) => {
   const { id } = req.params;
 
-  const data = await prisma.CommentLike.findMany({
+  const data = await prisma.commentLike.findMany({
     where: {
       commentId: Number(id),
     },
