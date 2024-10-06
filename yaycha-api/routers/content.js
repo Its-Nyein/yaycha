@@ -41,7 +41,7 @@ router.get("/posts/:id", async (req, res) => {
     });
     res.json(result);
   } catch (e) {
-    res.status(500).json({ msg: "Damm it" });
+    res.status(500).json({ msg: e });
   }
 });
 
