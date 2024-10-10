@@ -4,11 +4,14 @@ import {
   Add as AddIcon,
   LightMode as LightModeIcon,
   DarkMode as DarkModeIcon,
+  Search as SearchIcon,
 } from "@mui/icons-material";
 import { useContext } from "react";
 import { AppContext } from "../ThemeApp";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
+  const navigate = useNavigate();
   const { showForm, setShowForm, mode, setMode, setShowDrawer } =
     useContext(AppContext);
   return (
@@ -25,6 +28,9 @@ export default function Header() {
         <Box>
           <IconButton color="inherit" onClick={() => setShowForm(!showForm)}>
             <AddIcon />
+          </IconButton>
+          <IconButton color="inherit" onClick={() => navigate("/search")}>
+            <SearchIcon />
           </IconButton>
           {mode === "dark" ? (
             <IconButton
