@@ -1,14 +1,13 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Item from "./components/Item";
 import Form from "./components/Form";
 import "./index.css";
-import { AppContext } from "./ThemeApp";
 import { Box, Container } from "@mui/material";
 import Header from "./components/Header";
 import { useApp } from "./ThemeApp";
 
 export default function App() {
-  const { showForm } = useApp();
+  const { showForm, setGlobalMsg } = useApp();
 
   const [data, setData] = useState([
     { id: 1, content: "Hello, World!", name: "Alice" },
@@ -19,10 +18,12 @@ export default function App() {
   const add = (content, name) => {
     const id = data[0].id + 1;
     setData([{ id, content, name }, ...data]);
+    setGlobalMsg("An Item Added.");
   };
 
   const remove = (id) => {
     setData(data.filter((d) => d.id !== id));
+    setGlobalMsg("An Item Deleted.");
   };
 
   return (
