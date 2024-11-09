@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Item from "../components/Item";
 import Form from "../components/Form";
 import { Box, Container } from "@mui/material";
@@ -7,11 +7,14 @@ import { useApp } from "../ThemeApp";
 export default function Home() {
   const { showForm, setGlobalMsg } = useApp();
 
-  const [data, setData] = useState([
-    { id: 1, content: "Hello, World!", name: "Alice" },
-    { id: 2, content: "React is fun.", name: "Bob" },
-    { id: 3, content: "Yay, interesting.", name: "Chris" },
-  ]);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const api = import.meta.env.VITE_API;
+    fetch(`${api}/content/posts`).then(async (res) => {
+      setData(await res.json());
+    });
+  }, []);
 
   const add = (content, name) => {
     const id = data[0].id + 1;
