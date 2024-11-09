@@ -1,14 +1,29 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import App from "./App";
+import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 
-export const AppContent = createContext();
+export const AppContext = createContext();
+
+export function useApp() {
+  return useContext(AppContext);
+}
+
+const theme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
 
 const ThemeApp = () => {
-  const [mode, setMode] = useState("dark");
+  const [showForm, setShowForm] = useState(false);
+
   return (
-    <AppContent.Provider value={{ mode, setMode }}>
-      <App />
-    </AppContent.Provider>
+    <ThemeProvider theme={theme}>
+      <AppContext.Provider value={{ showForm, setShowForm }}>
+        <App />
+        <CssBaseline />
+      </AppContext.Provider>
+    </ThemeProvider>
   );
 };
 
