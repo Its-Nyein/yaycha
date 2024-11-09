@@ -1,6 +1,6 @@
 import { Alert, Box, Button, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useApp } from "../Template";
+import { useApp } from "../ThemeApp";
 
 const Login = () => {
   const navigate = useNavigate();

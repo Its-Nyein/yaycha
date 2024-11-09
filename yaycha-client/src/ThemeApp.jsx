@@ -1,12 +1,6 @@
 import { createContext, useContext, useMemo, useState } from "react";
-import {
-  CssBaseline,
-  Snackbar,
-  ThemeProvider,
-  createTheme,
-} from "@mui/material";
+import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { deepPurple, grey } from "@mui/material/colors";
-import AppDrawer from "./components/AppDrawer";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Template from "./Template";
 import Home from "./pages/Home";
@@ -28,7 +22,7 @@ const router = createBrowserRouter([
     element: <Template />,
     children: [
       {
-        path: "/home",
+        path: "/",
         element: <Home />,
       },
       {
@@ -91,17 +85,6 @@ const ThemeApp = () => {
           setAuth,
         }}
       >
-        <AppDrawer />
-        <Snackbar
-          anchorOrigin={{
-            horizontal: "center",
-            vertical: "bottom",
-          }}
-          open={Boolean(globalMsg)}
-          autoHideDuration={5000}
-          onClose={() => setGlobalMsg(null)}
-          message={globalMsg}
-        />
         <RouterProvider router={router} />
         <CssBaseline />
       </AppContext.Provider>

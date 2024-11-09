@@ -2,8 +2,7 @@ import { useState } from "react";
 import Item from "../components/Item";
 import Form from "../components/Form";
 import { Box, Container } from "@mui/material";
-import Header from "../components/Header";
-import { useApp } from "../Template";
+import { useApp } from "../ThemeApp";
 
 export default function Home() {
   const { showForm, setGlobalMsg } = useApp();
@@ -27,7 +26,6 @@ export default function Home() {
 
   return (
     <Box>
-      <Header />
       <Container maxWidth="sm" sx={{ mt: 4 }}>
         {showForm && <Form add={add} />}
         {data.map((item) => {

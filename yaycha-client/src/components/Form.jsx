@@ -1,10 +1,7 @@
-import { useContext, useRef } from "react";
-import { AppContext } from "../ThemeApp";
+import { useRef } from "react";
 import { Box, TextField, Button } from "@mui/material";
 
 const Form = ({ add }) => {
-  const { mode } = useContext(AppContext);
-
   const contentRef = useRef();
 
   return (
