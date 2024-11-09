@@ -6,9 +6,10 @@ import {
 } from "@mui/icons-material";
 import { green } from "@mui/material/colors";
 
-const Item = ({ item, remove }) => {
+const Item = ({ item, remove, primary }) => {
   return (
     <Card sx={{ mb: 2 }}>
+      {primary && <Box sx={{ height: 50, bgcolor: green[500] }} />}
       <CardContent>
         <Box
           sx={{

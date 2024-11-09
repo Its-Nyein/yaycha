@@ -1,5 +1,6 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import {
+  Container,
   CssBaseline,
   Snackbar,
   ThemeProvider,
@@ -7,14 +8,9 @@ import {
 } from "@mui/material";
 import { deepPurple, grey } from "@mui/material/colors";
 import AppDrawer from "./components/AppDrawer";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Template from "./Template";
+import { Outlet } from "react-router-dom";
+import Header from "./components/Header";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Likes from "./pages/Like";
-import Profile from "./pages/Profile";
-import Comments from "./pages/Comments";
 
 export const AppContext = createContext();
 
@@ -22,40 +18,7 @@ export function useApp() {
   return useContext(AppContext);
 }
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Template />,
-    children: [
-      {
-        path: "/home",
-        element: <Home />,
-      },
-      {
-        path: "/login",
-        element: <Login />,
-      },
-      {
-        path: "/register",
-        element: <Register />,
-      },
-      {
-        path: "/comments/:id",
-        element: <Comments />,
-      },
-      {
-        path: "/profile/:id",
-        element: <Profile />,
-      },
-      {
-        path: "/likes/:id",
-        element: <Likes />,
-      },
-    ],
-  },
-]);
-
-const ThemeApp = () => {
+const Template = () => {
   const [showDrawer, setShowDrawer] = useState(false);
   const [globalMsg, setGlobalMsg] = useState(null);
   const [auth, setAuth] = useState(null);
@@ -91,7 +54,11 @@ const ThemeApp = () => {
           setAuth,
         }}
       >
+        <Home />
         <AppDrawer />
+        <Container maxWidth="sm" sx={{ mt: 4 }}>
+          <Outlet />
+        </Container>
         <Snackbar
           anchorOrigin={{
             horizontal: "center",
@@ -102,11 +69,10 @@ const ThemeApp = () => {
           onClose={() => setGlobalMsg(null)}
           message={globalMsg}
         />
-        <RouterProvider router={router} />
         <CssBaseline />
       </AppContext.Provider>
     </ThemeProvider>
   );
 };
 
-export default ThemeApp;
+export default Template;

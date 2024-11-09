@@ -1,12 +1,11 @@
 import { useState } from "react";
-import Item from "./components/Item";
-import Form from "./components/Form";
-import "./index.css";
+import Item from "../components/Item";
+import Form from "../components/Form";
 import { Box, Container } from "@mui/material";
-import Header from "./components/Header";
-import { useApp } from "./ThemeApp";
+import Header from "../components/Header";
+import { useApp } from "../Template";
 
-export default function App() {
+export default function Home() {
   const { showForm, setGlobalMsg } = useApp();
 
   const [data, setData] = useState([
