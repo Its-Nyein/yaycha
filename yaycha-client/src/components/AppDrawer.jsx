@@ -63,7 +63,7 @@ const AppDrawer = () => {
         </Box>
         <List>
           <ListItem>
-            <ListItemButton>
+            <ListItemButton onClick={() => navigate("/")}>
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
@@ -100,7 +100,7 @@ const AppDrawer = () => {
           {!auth && (
             <>
               <ListItem>
-                <ListItemButton>
+                <ListItemButton onClick={() => navigate("/register")}>
                   <ListItemIcon>
                     <RegisterIcon />
                   </ListItemIcon>
@@ -108,7 +108,7 @@ const AppDrawer = () => {
                 </ListItemButton>
               </ListItem>
               <ListItem>
-                <ListItemButton onClick={() => setAuth(true)}>
+                <ListItemButton onClick={() => navigate("/login")}>
                   <ListItemIcon>
                     <LoginIcon />
                   </ListItemIcon>

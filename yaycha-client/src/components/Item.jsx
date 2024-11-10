@@ -47,6 +47,10 @@ const Item = ({ item, remove, primary, comment }) => {
         </Box>
         <Typography sx={{ my: 3 }}>{item.content}</Typography>
         <Box
+          onClick={(e) => {
+            navigate(`/profile/${item.user.id}`);
+            e.stopPropagation();
+          }}
           sx={{
             display: "flex",
             flexDirection: "row",
