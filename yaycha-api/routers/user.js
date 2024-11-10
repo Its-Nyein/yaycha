@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 const router = Router();
@@ -46,11 +47,38 @@ router.post("/users", async (req, res) => {
       .json({ msg: "Name, username and password are required" });
   }
 
-  const hashPassword = await bcrypt.hash("password", 10);
-  const user = await prisma.user.create({
-    data: { name, username, bio, password: hashPassword },
+  const hashPassword = await bcrypt.hash(password, 10);
+  try {
+    const user = await prisma.user.create({
+      data: { name, username, bio, password: hashPassword },
+    });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ msg: "Username and password are required" });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { username },
   });
-  res.json(user);
+
+  if (user) {
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    console.log(isValidPassword);
+    if (isValidPassword) {
+      const token = jwt.sign(user, process.env.JWT_SECRET);
+      return res.json({ token, user });
+    }
+  }
+
+  res.status(401).json({ msg: "Username or password are invalid" });
 });
 
 export default router;

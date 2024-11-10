@@ -19,8 +19,10 @@ import {
 } from "@mui/icons-material";
 import { deepPurple } from "@mui/material/colors";
 import { useApp } from "../ThemeApp";
+import { useNavigate } from "react-router-dom";
 
 const AppDrawer = () => {
+  const navigate = useNavigate();
   const { showDrawer, setShowDrawer, auth, setAuth } = useApp();
 
   return (
@@ -54,7 +56,9 @@ const AppDrawer = () => {
                 background: deepPurple[500],
               }}
             />
-            <Typography sx={{ fontWeight: "bold" }}>Alice</Typography>
+            <Typography sx={{ fontWeight: "bold" }}>
+              {auth ? auth.name : "Guest"}
+            </Typography>
           </Box>
         </Box>
         <List>
@@ -70,7 +74,7 @@ const AppDrawer = () => {
           {auth && (
             <>
               <ListItem>
-                <ListItemButton>
+                <ListItemButton onClick={() => navigate(`/profile/${auth.id}`)}>
                   <ListItemIcon>
                     <ProfileIcon />
                   </ListItemIcon>
@@ -78,7 +82,13 @@ const AppDrawer = () => {
                 </ListItemButton>
               </ListItem>
               <ListItem>
-                <ListItemButton onClick={() => setAuth(null)}>
+                <ListItemButton
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    setAuth(null);
+                    navigate("/");
+                  }}
+                >
                   <ListItemIcon>
                     <LogoutIcon color="error" />
                   </ListItemIcon>
