@@ -65,4 +65,52 @@ router.delete("/comments/:id", auth, isOwner("comment"), async (req, res) => {
   res.sendStatus(204);
 });
 
+router.post("/posts", auth, async (req, res) => {
+  const { content } = req.body;
+  const user = res.locals.user;
+
+  if (!content) {
+    return res.status(400).json({ msg: "Content is required" });
+  }
+
+  const post = await prisma.post.create({
+    data: {
+      content,
+      userId: user.id,
+    },
+  });
+
+  const data = await prisma.post.findUnique({
+    where: { id: Number(post.id) },
+    include: {
+      user: true,
+      comments: {
+        include: { user: true },
+      },
+    },
+  });
+
+  res.json(data);
+});
+
+router.post("/comments", auth, async (req, res) => {
+  const { content, postId } = req.body;
+  const user = res.locals.user;
+
+  if (!content || !postId) {
+    return res.status(400).json({ msg: "Content and postId are required" });
+  }
+
+  const comment = await prisma.comment.create({
+    data: {
+      content,
+      userId: Number(user.id),
+      postId: Number(postId),
+    },
+  });
+
+  comment.user = user;
+  res.json(comment);
+});
+
 export default router;

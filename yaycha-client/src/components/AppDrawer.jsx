@@ -62,7 +62,7 @@ const AppDrawer = () => {
           </Box>
         </Box>
         <List>
-          <ListItem>
+          <ListItem onClick={() => setShowDrawer(false)}>
             <ListItemButton onClick={() => navigate("/")}>
               <ListItemIcon>
                 <HomeIcon />
