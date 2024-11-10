@@ -2,6 +2,7 @@ import { Router } from "express";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { auth } from "../middlewares/auth.js";
 
 const prisma = new PrismaClient();
 const router = Router();
@@ -71,7 +72,7 @@ router.post("/login", async (req, res) => {
 
   if (user) {
     const isValidPassword = await bcrypt.compare(password, user.password);
-    console.log(isValidPassword);
+
     if (isValidPassword) {
       const token = jwt.sign(user, process.env.JWT_SECRET);
       return res.json({ token, user });
@@ -79,6 +80,11 @@ router.post("/login", async (req, res) => {
   }
 
   res.status(401).json({ msg: "Username or password are invalid" });
+});
+
+router.get("/verify", auth, async (req, res) => {
+  const user = res.locals.user;
+  res.json(user);
 });
 
 export default router;
