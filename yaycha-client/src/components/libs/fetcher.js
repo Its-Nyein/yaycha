@@ -189,3 +189,8 @@ export async function deleteFollow(id) {
 
   return res.json();
 }
+
+export async function fetchSearch(q) {
+  const res = await fetch(`${api}/search?q=${q}`);
+  return res.json();
+}

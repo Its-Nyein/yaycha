@@ -5,9 +5,12 @@ import {
   Add as AddIcon,
   LightMode as LightModeIcon,
   DarkMode as DarkModeIcon,
+  Search as SearchIcon,
 } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
   const { showForm, setShowForm, mode, setMode, setShowDrawer } = useApp();
   return (
     <AppBar position="static">
@@ -23,6 +26,9 @@ const Header = () => {
         <Box>
           <IconButton color="inherit" onClick={() => setShowForm(!showForm)}>
             <AddIcon />
+          </IconButton>
+          <IconButton color="inherit" onClick={() => navigate("/search")}>
+            <SearchIcon />
           </IconButton>
           {mode === "dark" ? (
             <IconButton color="inherit" edge="end">
