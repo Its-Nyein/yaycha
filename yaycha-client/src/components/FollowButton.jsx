@@ -32,7 +32,7 @@ const FollowButton = ({ user }) => {
   ) : (
     <Button
       size="small"
-      variant={isFollowing ? "outlined" : "contained"}
+      variant={isFollowing() ? "outlined" : "contained"}
       sx={{ borderRadius: 5, marginLeft: "auto" }}
       onClick={(e) => {
         if (isFollowing()) {
