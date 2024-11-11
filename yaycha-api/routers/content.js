@@ -161,7 +161,7 @@ router.delete("/unlike/comments/:id", auth, async (req, res) => {
   const id = req.params.id;
   const user = res.locals.user;
 
-  const like = await prisma.commentLike.deleteMany({
+  await prisma.commentLike.deleteMany({
     where: {
       commentId: Number(id),
       userId: Number(user.id),

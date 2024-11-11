@@ -101,3 +101,65 @@ export async function postComment({ content, postId }) {
 
   throw new Error("Error: Check network log");
 }
+
+export async function postPostLikes(id) {
+  const token = getToken();
+
+  const res = await fetch(`${api}/content/like/posts/${id}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.json();
+}
+
+export async function postCommentLikes(id) {
+  const token = getToken();
+
+  const res = await fetch(`${api}/content/like/comments/${id}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.json();
+}
+
+export async function deletePostLikes(id) {
+  const token = getToken();
+
+  const res = await fetch(`${api}/content/unlike/posts/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.json();
+}
+
+export async function deleteCommentLikes(id) {
+  const token = getToken();
+
+  const res = await fetch(`${api}/content/unlike/comments/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.json();
+}
+
+export async function fetchPostLikes(id) {
+  const res = await fetch(`${api}/content/likes/posts/${id}`);
+  return res.json();
+}
+
+export async function fetchCommentLikes(id) {
+  const res = await fetch(`${api}/content/likes/comments/${id}`);
+  return res.json();
+}
