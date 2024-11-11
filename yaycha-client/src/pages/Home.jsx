@@ -79,13 +79,13 @@ export default function Home() {
             }}
           >
             <Button disabled={showLatest} onClick={() => setShowLatest(true)}>
-              Latest
+              All Posts
             </Button>
             <Typography color="error" sx={{ fontSize: 15 }}>
               |
             </Typography>
             <Button disabled={!showLatest} onClick={() => setShowLatest(false)}>
-              Following
+              Following Posts
             </Button>
           </Box>
         )}
