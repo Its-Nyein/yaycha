@@ -69,21 +69,25 @@ const Profile = () => {
           <Typography sx={{ fontSize: "0.8em", color: "text.fade" }}>
             {data.bio}
           </Typography>
-          <Button
-            size="small"
-            variant={isFollowing() ? "outlined" : "contained"}
-            sx={{ borderRadius: 5, marginLeft: "auto", mt: 4 }}
-            onClick={(e) => {
-              if (isFollowing()) {
-                unfollow.mutate(data.id);
-              } else {
-                follow.mutate(data.id);
-              }
-              e.stopPropagation();
-            }}
-          >
-            {isFollowing() ? "Following" : "Follow"}
-          </Button>
+          {data.id === auth.id ? (
+            <></>
+          ) : (
+            <Button
+              size="small"
+              variant={isFollowing() ? "outlined" : "contained"}
+              sx={{ borderRadius: 5, marginLeft: "auto", mt: 4 }}
+              onClick={(e) => {
+                if (isFollowing()) {
+                  unfollow.mutate(data.id);
+                } else {
+                  follow.mutate(data.id);
+                }
+                e.stopPropagation();
+              }}
+            >
+              {isFollowing() ? "Following" : "Follow"}
+            </Button>
+          )}
         </Box>
       </Box>
     </Box>
