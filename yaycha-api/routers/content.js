@@ -211,4 +211,33 @@ router.get("/likes/comments/:id", async (req, res) => {
   res.json(data);
 });
 
+router.get("/following/posts", auth, async (req, res) => {
+  const user = res.locals.user;
+
+  const follow = await prisma.follow.findMany({
+    where: {
+      followerId: Number(user.id),
+    },
+  });
+
+  const followUserId = follow.map((user) => user.followingId);
+
+  const data = await prisma.post.findMany({
+    where: {
+      userId: {
+        in: followUserId,
+      },
+    },
+    include: {
+      user: true,
+      comments: true,
+      likes: true,
+    },
+    orderBy: { id: "desc" },
+    take: 20,
+  });
+
+  res.json(data);
+});
+
 export default router;
