@@ -24,29 +24,30 @@ const LikeButton = ({ item, comment }) => {
     return item.likes.find((like) => like.userId === auth.id);
   }
 
+  // instead of refetchQuery should update latest on client side
   const likePost = useMutation((id) => postPostLikes(id), {
     onSuccess: () => {
-      queryClient.cancelQueries("posts");
-      queryClient.cancelQueries("comments");
+      queryClient.refetchQueries("posts");
+      queryClient.refetchQueries("comments");
     },
   });
 
   const likeComment = useMutation((id) => postCommentLikes(id), {
     onSuccess: () => {
-      queryClient.cancelQueries("comments");
+      queryClient.refetchQueries("comments");
     },
   });
 
   const unlikePost = useMutation((id) => deletePostLikes(id), {
     onSuccess: () => {
-      queryClient.cancelQueries("posts");
-      queryClient.cancelQueries("comments");
+      queryClient.refetchQueries("posts");
+      queryClient.refetchQueries("comments");
     },
   });
 
   const unlikeComment = useMutation((id) => deleteCommentLikes(id), {
     onSuccess: () => {
-      queryClient.cancelQueries("comments");
+      queryClient.refetchQueries("comments");
     },
   });
 
