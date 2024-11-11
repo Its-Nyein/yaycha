@@ -9,6 +9,7 @@ import {
   ListItemButton,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import FollowButton from "./FollowButton";
 
 const UserList = ({ title, data }) => {
   const navigate = useNavigate();
@@ -32,6 +33,9 @@ const UserList = ({ title, data }) => {
                   primary={item.user.name}
                   secondary={item.user.bio}
                 />
+              </ListItemButton>
+              <ListItemButton>
+                <FollowButton user={item.user} />
               </ListItemButton>
             </ListItem>
           );

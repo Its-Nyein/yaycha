@@ -163,3 +163,29 @@ export async function fetchCommentLikes(id) {
   const res = await fetch(`${api}/content/likes/comments/${id}`);
   return res.json();
 }
+
+export async function postFollow(id) {
+  const token = getToken();
+
+  const res = await fetch(`${api}/follow/${id}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.json();
+}
+
+export async function deleteFollow(id) {
+  const token = getToken();
+
+  const res = await fetch(`${api}/unfollow/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.json();
+}
