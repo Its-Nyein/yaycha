@@ -1,15 +1,42 @@
-import { Alert, Avatar, Box, Typography } from "@mui/material";
+import { Alert, Avatar, Box, Button, Typography } from "@mui/material";
 import { pink } from "@mui/material/colors";
-import { fetchUser } from "../components/libs/fetcher.js";
-import { useQuery } from "react-query";
+import {
+  deleteFollow,
+  fetchUser,
+  postFollow,
+} from "../components/libs/fetcher.js";
+import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
+import { useApp, queryClient } from "../ThemeApp";
 
 const Profile = () => {
+  const { auth } = useApp();
   const { id } = useParams();
+  // refetch everytime change users or id
   const { isLoading, isError, error, data } = useQuery(
-    `users/${id}`,
+    ["users", id],
     async () => fetchUser(id)
   );
+
+  function isFollowing() {
+    return data.following.find((u) => u.followerId === auth.id);
+  }
+
+  const follow = useMutation((id) => postFollow(id), {
+    onSuccess: async () => {
+      await queryClient.refetchQueries("user");
+      await queryClient.refetchQueries("users");
+      await queryClient.refetchQueries("search");
+    },
+  });
+
+  const unfollow = useMutation((id) => deleteFollow(id), {
+    onSuccess: async () => {
+      await queryClient.refetchQueries("user");
+      await queryClient.refetchQueries("users");
+      await queryClient.refetchQueries("search");
+    },
+  });
 
   if (isError) {
     return (
@@ -42,6 +69,21 @@ const Profile = () => {
           <Typography sx={{ fontSize: "0.8em", color: "text.fade" }}>
             {data.bio}
           </Typography>
+          <Button
+            size="small"
+            variant={isFollowing() ? "outlined" : "contained"}
+            sx={{ borderRadius: 5, marginLeft: "auto", mt: 4 }}
+            onClick={(e) => {
+              if (isFollowing()) {
+                unfollow.mutate(data.id);
+              } else {
+                follow.mutate(data.id);
+              }
+              e.stopPropagation();
+            }}
+          >
+            {isFollowing() ? "Following" : "Follow"}
+          </Button>
         </Box>
       </Box>
     </Box>
