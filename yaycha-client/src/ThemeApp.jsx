@@ -12,6 +12,7 @@ import Comments from "./pages/Comments";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { fetchVerify } from "./components/libs/fetcher.js";
 import Search from "./pages/Search.jsx";
+import Notis from "./pages/Notis.jsx";
 
 export const AppContext = createContext();
 
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "/search",
         element: <Search />,
+      },
+      {
+        path: "/notis",
+        element: <Notis />,
       },
     ],
   },

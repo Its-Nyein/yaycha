@@ -223,3 +223,41 @@ export async function fetchAllPosts() {
   const res = await fetch(`${api}/content/posts`);
   return res.json();
 }
+
+export async function fetchNotis() {
+  const token = getToken();
+
+  const res = await fetch(`${api}/content/notis`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.json();
+}
+
+export async function putAllReadNotis() {
+  const token = getToken();
+
+  const res = await fetch(`${api}/content/notis/read`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.json();
+}
+
+export async function putReadNoties(id) {
+  const token = getToken();
+
+  const res = await fetch(`${api}/content/notis/read/${id}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.json();
+}
