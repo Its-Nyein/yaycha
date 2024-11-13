@@ -170,10 +170,16 @@ router.post("/like/comments/:id", auth, async (req, res) => {
     },
   });
 
+  const comment = await prisma.comment.findUnique({
+    where: {
+      id: Number(id),
+    },
+  });
+
   await addNotification({
     type: "like",
     content: "likes your comment",
-    postId: id,
+    postId: comment.postId,
     userId: user.id,
   });
 
