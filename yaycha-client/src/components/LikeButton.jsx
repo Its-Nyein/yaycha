@@ -70,6 +70,7 @@ const LikeButton = ({ item, comment }) => {
           size="small"
           onClick={(e) => {
             comment ? likeComment.mutate(item.id) : likePost.mutate(item.id);
+            console.log(item.id);
             e.stopPropagation();
           }}
         >

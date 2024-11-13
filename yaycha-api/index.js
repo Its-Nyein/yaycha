@@ -3,16 +3,20 @@ import cors from "cors";
 import { PrismaClient } from "@prisma/client";
 import contentRouter from "./routers/content.js";
 import userRouter from "./routers/user.js";
+import expressWs from "express-ws";
+import { router as wsRouteer } from "./routers/ws.js";
 
 const prisma = new PrismaClient();
 
 const app = express();
+expressWs(app);
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/content", contentRouter);
 app.use("/", userRouter);
+app.use("/", wsRouteer);
 
 app.get("/info", (req, res) => {
   res.json({ msg: "Yaycha API" });

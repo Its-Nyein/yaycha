@@ -1,6 +1,7 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import { auth, isOwner } from "../middlewares/auth.js";
+import { clients } from "./ws.js";
 
 const prisma = new PrismaClient();
 const router = express.Router();
@@ -313,6 +314,13 @@ async function addNotification({ type, content, postId, userId }) {
   });
 
   if (post.userId === userId) return false;
+
+  clients.map((client) => {
+    if (client.userId === post.userId) {
+      client.ws.send(JSON.stringify({ event: "notis" }));
+      console.log(`WS: Event sent to ${client.userId}: Notifications`);
+    }
+  });
 
   return await prisma.notification.create({
     data: {

@@ -13,6 +13,7 @@ import { QueryClientProvider, QueryClient } from "react-query";
 import { fetchVerify } from "./components/libs/fetcher.js";
 import Search from "./pages/Search.jsx";
 import Notis from "./pages/Notis.jsx";
+import AppSocket from "./AppSocket.jsx";
 
 export const AppContext = createContext();
 
@@ -107,6 +108,7 @@ const ThemeApp = () => {
       >
         <QueryClientProvider client={queryClient}>
           <RouterProvider router={router} />
+          <AppSocket />
         </QueryClientProvider>
         <CssBaseline />
       </AppContext.Provider>
