@@ -64,8 +64,7 @@ export default function Home() {
   }
 
   return (
-    <Box>
-      <Container maxWidth="sm" sx={{ mt: 4 }}>
+      <Box maxWidth="sm" sx={{ mt: 4 }}>
         {showForm && auth && <Form add={add.mutate} />}
         {auth && (
           <Box
@@ -91,7 +90,6 @@ export default function Home() {
         {data.map((item) => {
           return <Item key={item.id} item={item} remove={remove.mutate} />;
         })}
-      </Container>
-    </Box>
+      </Box>
   );
 }

@@ -48,16 +48,25 @@ const Search = () => {
       {isLoading ? (
         <Box sx={{ textAlign: "center", mt: 4 }}>Loading...</Box>
       ) : (
-        <List>
+        <List sx={{ display: "flex", flexDirection: "column", alignItems: "start", position: "relative" }}>
           {data.map((user) => {
             return (
               <ListItem key={user.id}>
-                <ListItemButton onClick={() => navigate(`/profile/${user.id}`)}>
+                <ListItemButton 
+                  onClick={() => navigate(`/profile/${user.id}`)}
+                  >
                   <ListItemAvatar>
                     <Avatar />
                   </ListItemAvatar>
-                  <ListItemText primary={user.name} secondary={user.bio} />
-                  <ListItemSecondaryAction>
+                  <ListItemText 
+                    primary={user.name} 
+                    secondary={user.bio} 
+                    sx={{
+                    whiteSpace: "normal",
+                    wordBreak: "break-word",
+                  }}
+                  />
+                  <ListItemSecondaryAction sx={{  position: "relative", right: 0 }}>
                     <FollowButton user={user} />
                   </ListItemSecondaryAction>
                 </ListItemButton>

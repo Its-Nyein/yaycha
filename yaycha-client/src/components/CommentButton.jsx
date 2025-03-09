@@ -5,7 +5,7 @@ const CommentButton = ({ item, comment }) => {
   return (
     <>
       {!comment && (
-        <ButtonGroup sx={{ ml: 3 }}>
+        <ButtonGroup>
           <IconButton size="small">
             <CommentIcon fontSize="small" color="info" />
           </IconButton>
