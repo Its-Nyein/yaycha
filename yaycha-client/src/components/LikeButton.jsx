@@ -52,7 +52,7 @@ const LikeButton = ({ item, comment }) => {
   });
 
   return (
-    <ButtonGroup>
+    <ButtonGroup sx={{ml: 3}}>
       {isLiked() ? (
         <IconButton
           size="small"

@@ -11,8 +11,6 @@ import {
 } from "../components/libs/fetcher.js";
 import { useState } from "react";
 
-const api = import.meta.env.VITE_API;
-
 export default function Home() {
   const [showLatest, setShowLatest] = useState(true);
 
